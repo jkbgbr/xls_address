@@ -158,9 +158,10 @@ def write_samplefile():
 
 
 if __name__ == '__main__':
-    # import xlrd
-    # wb = xlrd.open_workbook('sample.xlsx')
-    # mysheet = wb.sheet_by_index(0)
-    # print(get_value(mysheet, 'A1:Z1', True))
-
+    import xlrd
+    import os
     write_samplefile()
+    wb = xlrd.open_workbook('test.xls')
+    sheet = wb.sheet_by_index(0)
+    print(get_value(sheet, addr='C4:D5', value_only=True))
+    os.remove('test.xls')
