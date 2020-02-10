@@ -58,11 +58,8 @@ class TestSingle(unittest.TestCase):
 class TestReadingFromFile(unittest.TestCase):
 
     def setUp(self) -> None:
-        try:
-            wb = xlrd.open_workbook('sample.xlsx')
-            self.sheet = wb.sheet_by_index(0)
-        except FileNotFoundError:
-            print("Could not test reading from an excel file as sample file {} was not found".format('sample.xlsx'))
+        wb = xlrd.open_workbook('sample.xlsx')
+        self.sheet = wb.sheet_by_index(0)
 
     def test_reading_given_column(self):
         """Reading from a given given column"""
