@@ -95,33 +95,35 @@ def get_value(sheet, addr, value_only=False):
     """Use this to retreive stuff"""
     # this does not work at all
     try:
-        addr = _cell_range(addr)
+        _addr = _cell_range(addr)
     except ValueError:
         raise
 
     try:
-        addr = addr[0][0], addr[0][1], addr[1][0], addr[1][1]
+        _addr = _addr[0][0], _addr[0][1], _addr[1][0], _addr[1][1]
+
+        # checking a range definition validity: start_ is smaller of same as end_
+        if not (_addr[0] <= _addr[2]) or not(_addr[1] <= _addr[3]):
+            raise ValueError('The range definition {} is not correct'.format(addr))
+
         if value_only:
             _ret = []
-            for r in _get_cell_range(sheet, *addr):
+            for r in _get_cell_range(sheet, *_addr):
                 _ret.append([x.value for x in r])
             return _ret
         else:
-            return _get_cell_range(sheet, *addr)
+            return _get_cell_range(sheet, *_addr)
 
     except TypeError:
         if value_only:
-            return sheet.cell_value(*addr)
+            return sheet.cell_value(*_addr)
         else:
-            return sheet.cell(*addr)
+            return sheet.cell(*_addr)
 
 
 if __name__ == '__main__':
-    # print(_cell_address('$B$3'))
-    # print(_cell_address('AD3'))
-    print(_cell_address('XFD1'))
-    print(_column_adress('XFD'))
-    print(_row_adress('1'))
 
-
-    # print(LETTERS.index('X'))
+    import xlrd
+    wb = xlrd.open_workbook('sample.xlsx')
+    sheet = wb.sheet_by_index(0)
+    print(get_value(sheet, 'A1:Z1', True))

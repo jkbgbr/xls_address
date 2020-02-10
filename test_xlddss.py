@@ -92,6 +92,8 @@ class TestReadingFromFile(unittest.TestCase):
         self.assertEqual(xlddss.get_value(self.sheet, addr='C4:D5', value_only=True), [[1, 2], [3, 4]])
         self.assertEqual(xlddss.get_value(self.sheet, addr='F7:F11', value_only=True), [[5], [5], [5], [5], [5]])
 
+        self.assertRaises(ValueError, xlddss.get_value, *(self.sheet, 'D5:C4', True))
+
 
 if __name__ == '__main__':
     unittest.main()
