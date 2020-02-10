@@ -8,6 +8,7 @@ TESTFILE_PATH = 'test.xls'
 
 
 def write_samplefile():
+    """This writes a sample file for testing"""
     book = xlwt.Workbook()
     sheet = book.add_sheet("Table1")
 
@@ -131,14 +132,17 @@ class TestReadingFromFile(unittest.TestCase):
         _addr = xlddss._cell_address('C4')
         self.assertEqual(self.sheet.cell_value(*_addr), 1)
 
+        # single cells
         self.assertEqual(xlddss.get_value(self.sheet, addr='C4', value_only=True), 1)
         self.assertEqual(xlddss.get_value(self.sheet, addr='F7', value_only=True), 5)
         self.assertEqual(xlddss.get_value(self.sheet, addr='I7', value_only=True), 'text')
         self.assertEqual(xlddss.get_value(self.sheet, addr='J7', value_only=True), 'data')
 
+        # ranges
         self.assertEqual(xlddss.get_value(self.sheet, addr='C4:D5', value_only=True), [[1, 2], [3, 4]])
         self.assertEqual(xlddss.get_value(self.sheet, addr='F7:F11', value_only=True), [[5], [5], [5], [5], [5]])
 
+        # false range definition
         self.assertRaises(ValueError, xlddss.get_value, *(self.sheet, 'D5:C4', True))
 
 

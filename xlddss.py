@@ -129,4 +129,6 @@ if __name__ == '__main__':
     # wb = xlrd.open_workbook('test.xls')
     # sheet = wb.sheet_by_index(0)
     # print(get_value(sheet, addr='C4:D5', value_only=True))
+    # print(get_value(sheet, addr='C4', value_only=True))
+    # print(get_value(sheet, addr='C4', value_only=False))
     # os.remove('test.xls')
