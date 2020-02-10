@@ -4,6 +4,7 @@ row-column designation
 """
 
 import re
+import xlwt
 
 
 LETTERS = tuple([chr(x) for x in range(65, 65+26)])  # A to Z
@@ -121,9 +122,45 @@ def get_value(sheet, addr, value_only=False):
             return sheet.cell(*_addr)
 
 
-if __name__ == '__main__':
+def write_samplefile():
+    book = xlwt.Workbook()
+    sheet = book.add_sheet("Table1")
 
-    import xlrd
-    wb = xlrd.open_workbook('sample.xlsx')
-    mysheet = wb.sheet_by_index(0)
-    print(get_value(mysheet, 'A1:Z1', True))
+    for rownum in range(41):
+        row = sheet.row(rownum)
+        row.write(0, rownum)
+
+    for colnum in range(1, 26):
+        row = sheet.row(0)
+        # col = sheet.col(colnum)
+        row.write(colnum, colnum)
+
+    # C4:D5
+    sheet.row(3).write(2, 1)
+    sheet.row(3).write(3, 2)
+    sheet.row(4).write(2, 3)
+    sheet.row(4).write(3, 4)
+
+    # G4:J4
+    for i in range(6, 10):
+        sheet.row(3).write(i, 1)
+
+    # F7:F11
+    for i in range(6, 11):
+        sheet.row(i).write(5, 5)
+
+    # I7
+    sheet.row(6).write(8, 'text')
+    # J7
+    sheet.row(6).write(9, 'data')
+
+    book.save('test.xls')
+
+
+if __name__ == '__main__':
+    # import xlrd
+    # wb = xlrd.open_workbook('sample.xlsx')
+    # mysheet = wb.sheet_by_index(0)
+    # print(get_value(mysheet, 'A1:Z1', True))
+
+    write_samplefile()

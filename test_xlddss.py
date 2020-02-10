@@ -1,6 +1,45 @@
 import unittest
 import xlddss
 import xlrd
+import xlwt
+
+
+TESTFILE_PATH = 'test.xls'
+
+
+def write_samplefile():
+    book = xlwt.Workbook()
+    sheet = book.add_sheet("Table1")
+
+    for rownum in range(41):
+        row = sheet.row(rownum)
+        row.write(0, rownum)
+
+    for colnum in range(1, 26):
+        row = sheet.row(0)
+        # col = sheet.col(colnum)
+        row.write(colnum, colnum)
+
+    # C4:D5
+    sheet.row(3).write(2, 1)
+    sheet.row(3).write(3, 2)
+    sheet.row(4).write(2, 3)
+    sheet.row(4).write(3, 4)
+
+    # G4:J4
+    for i in range(6, 10):
+        sheet.row(3).write(i, 1)
+
+    # F7:F11
+    for i in range(6, 11):
+        sheet.row(i).write(5, 5)
+
+    # I7
+    sheet.row(6).write(8, 'text')
+    # J7
+    sheet.row(6).write(9, 'data')
+
+    book.save(TESTFILE_PATH)
 
 
 class TestSingle(unittest.TestCase):
@@ -58,8 +97,16 @@ class TestSingle(unittest.TestCase):
 class TestReadingFromFile(unittest.TestCase):
 
     def setUp(self) -> None:
-        wb = xlrd.open_workbook('sample.xlsx')
+        write_samplefile()
+        wb = xlrd.open_workbook('test.xls')
         self.sheet = wb.sheet_by_index(0)
+
+    def tearDown(self) -> None:
+        try:
+            import os
+            os.remove('test.xls')
+        except FileNotFoundError:
+            pass
 
     def test_reading_given_column(self):
         """Reading from a given given column"""
