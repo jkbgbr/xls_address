@@ -65,10 +65,10 @@ def _cell_address(addr='XFD1048576', rev=False):
     if rev:
         _col, _row = _row, _col
 
-    return _col, _row
+    return _row, _col
 
 
-def _cell_range(rnge='A1:XFD1048576'):
+def _cell_range(rnge='A1:XFD1048576') -> tuple:
     """Returns the addresses from range"""
 
     # splitting
@@ -82,6 +82,38 @@ def _cell_range(rnge='A1:XFD1048576'):
 
     else:  # len(rnge) == 2
         return _cell_address(rnge[0]), _cell_address(rnge[1])
+
+
+def _get_cell_range(sheet, start_row, start_col, end_row, end_col):
+    """Returns the values from a range
+    https://stackoverflow.com/a/33938163
+    """
+    return [sheet.row_slice(row, start_colx=start_col, end_colx=end_col+1) for row in range(start_row, end_row+1)]
+
+
+def get_value(sheet, addr, value_only=False):
+    """Use this to retreive stuff"""
+    # this does not work at all
+    try:
+        addr = _cell_range(addr)
+    except ValueError:
+        raise
+
+    try:
+        addr = addr[0][0], addr[0][1], addr[1][0], addr[1][1]
+        if value_only:
+            _ret = []
+            for r in _get_cell_range(sheet, *addr):
+                _ret.append([x.value for x in r])
+            return _ret
+        else:
+            return _get_cell_range(sheet, *addr)
+
+    except TypeError:
+        if value_only:
+            return sheet.cell_value(*addr)
+        else:
+            return sheet.cell(*addr)
 
 
 if __name__ == '__main__':
