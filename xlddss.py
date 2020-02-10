@@ -125,5 +125,5 @@ if __name__ == '__main__':
 
     import xlrd
     wb = xlrd.open_workbook('sample.xlsx')
-    sheet = wb.sheet_by_index(0)
-    print(get_value(sheet, 'A1:Z1', True))
+    mysheet = wb.sheet_by_index(0)
+    print(get_value(mysheet, 'A1:Z1', True))
