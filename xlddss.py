@@ -92,7 +92,7 @@ def _get_cell_range(sheet, start_row, start_col, end_row, end_col):
     return [sheet.row_slice(row, start_colx=start_col, end_colx=end_col+1) for row in range(start_row, end_row+1)]
 
 
-def get_value(sheet, addr, value_only=False):
+def get_value(sheet, addr, value_only=True):
     """Use this to retreive stuff"""
     # this does not work at all
     try:
@@ -124,11 +124,11 @@ def get_value(sheet, addr, value_only=False):
 
 if __name__ == '__main__':
     pass
-    # import xlrd
-    # import os
-    # wb = xlrd.open_workbook('test.xls')
-    # sheet = wb.sheet_by_index(0)
-    # print(get_value(sheet, addr='C4:D5', value_only=True))
-    # print(get_value(sheet, addr='C4', value_only=True))
-    # print(get_value(sheet, addr='C4', value_only=False))
-    # os.remove('test.xls')
+    import xlrd
+    import os
+    wb = xlrd.open_workbook('test.xls')
+    sheet = wb.sheet_by_index(0)
+    print(get_value(sheet, addr='C4:D5', value_only=True))
+    print(get_value(sheet, addr='C4', value_only=True))
+    print(get_value(sheet, addr='C4', value_only=False))
+    os.remove('test.xls')
